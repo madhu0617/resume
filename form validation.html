@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>College Registration Form</title>
+</head>
+<body>
+<h1>College Registration Form</h1>
+<form>
+First Name:
+<input type="text" id="fname"><br><br>
+Last Name:
+<input type="text" id="lname"><br><br>
+Father Name:
+<input type="text" id="father"><br><br>
+Mother Name:
+<input type="text" id="mother"><br><br>
+Mobile Number:
+select id="course">
+<option>AIML</option>
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>EEE</option>
+</select><br><br>
+10th Mark:
+<input type="number" id="mark10"><br><br>
+12th Mark:
+<input type="number" id="mark12"><br><br>
+<button type="button" <input type="text" id="mobile"><br><br>
+Email ID:
+<input type="email" id="email"><br><br>
+Permanent Address:
+<textarea id="paddress"></textarea><br><br>
+Temporary Address:
+<textarea id="taddress"></textarea><br><br>
+Course Chosen:
+<onclick="registerStudent()">
+Submit
+</button>
+</form>
+<hr>
+<div id="output"></div>
+
+<script>
+function registerStudent()
+{
+let student = {
+firstName : document.getElementById("fname").value,
+lastName : document.getElementById("lname").value,
+fatherName : document.getElementById("father").value,
+motherName : document.getElementById("mother").value,
+mobile : document.getElementById("mobile").value,
+email : document.getElementById("email").value,
+permanentAddress : document.getElementById("paddress").value,
+temporaryAddress : document.getElementById("taddress").value,
+course : document.getElementById("course").value,
+tenthMark : document.getElementById("mark10").value,
+twelthMark : document.getElementById("mark12").value
+};
+
+document.getElementById("output").innerHTML ="<h2>Student Details</h2>" +
+"First Name: " + student.firstName + "<br><br>" +
+"Last Name: " + student.lastName + "<br><br>" +
+"Father Name: " + student.fatherName + "<br><br>" +
+"Mother Name: " + student.motherName + "<br><br>" +
+"Mobile Number: " + student.mobile + "<br><br>" +
+"Email ID: " + student.email + "<br><br>" +
+"Permanent Address: " + student.permanentAddress + "<br><br>" +
+"Temporary Address: " + student.temporaryAddress + "<br><br>" +
+"Course: " + student.course + "<br><br>" +
+"10th Mark: " + student.tenthMark + "<br><br>" +
+"12th Mark: " + student.twelthMark;
+}
+
+</script>
+
+</body>
+</html>

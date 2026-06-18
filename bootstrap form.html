@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Registration CRUD</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    padding:20px;
+}
+
+.container{
+    display:flex;
+    gap:20px;
+}
+
+.form-section{
+    width:40%;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.form-section h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+label{
+    display:block;
+    margin-top:10px;
+    margin-bottom:5px;
+    font-weight:bold;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.btn-group{
+    display:flex;
+    gap:10px;
+}
+
+button{
+    flex:1;
+    padding:10px;
+    margin-top:15px;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+.add-btn{
+    background:green;
+    color:white;
+}
+
+.update-btn{
+    background:orange;
+    color:white;
+}
+
+.table-section{
+    width:60%;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+    overflow-x:auto;
+}
+
+.table-section h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:green;
+    color:white;
+    padding:10px;
+}
+
+td{
+    border:1px solid #ddd;
+    padding:8px;
+    text-align:center;
+}
+
+.edit-btn{
+    background:blue;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    border-radius:5px;
+}
+
+.delete-btn{
+    background:red;
+    color:white;
+    border:none;
+    padding:5px 10px;
+    border-radius:5px;
+}
+
+@media(max-width:900px){
+
+.container{
+    flex-direction:column;
+}
+
+.form-section,
+.table-section{
+    width:100%;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="form-section">
+
+<h2>Student Registration</h2>
+
+<label>First Name</label>
+<input type="text" id="fname">
+
+<label>Last Name</label>
+<input type="text" id="lname">
+
+<label>Father Name</label>
+<input type="text" id="father">
+
+<label>Mother Name</label>
+<input type="text" id="mother">
+
+<label>Mobile Number</label>
+<input type="text" id="mobile">
+
+<label>Email ID</label>
+<input type="email" id="email">
+
+<label>Permanent Address</label>
+<textarea id="paddress" rows="3"></textarea>
+
+<label>Temporary Address</label>
+<textarea id="taddress" rows="3"></textarea>
+
+<label>Course Chosen</label>
+<select id="course">
+<option>AIML</option>
+<option>CSE</option>
+<option>IT</option>
+<option>ECE</option>
+<option>EEE</option>
+</select>
+
+<label>10th Mark (%)</label>
+<input type="number" id="mark10">
+
+<label>12th Mark (%)</label>
+<input type="number" id="mark12">
+
+<div class="btn-group">
+<button class="add-btn" onclick="addStudent()">Add Student</button>
+<button class="update-btn" onclick="updateStudent()">Update Student</button>
+</div>
+
+</div>
+
+<div class="table-section">
+
+<h2>Student Details</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Father</th>
+<th>Mother</th>
+<th>Mobile</th>
+<th>Email</th>
+<th>Course</th>
+<th>10th</th>
+<th>12th</th>
+<th>Actions</th>
+</tr>
+
+</thead>
+
+<tbody id="tableBody">
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+let studentId = 1;
+let selectedRow = null;
+
+function addStudent(){
+
+    let student = {
+
+        firstName : document.getElementById("fname").value,
+        lastName : document.getElementById("lname").value,
+        fatherName : document.getElementById("father").value,
+        motherName : document.getElementById("mother").value,
+        mobile : document.getElementById("mobile").value,
+        email : document.getElementById("email").value,
+        permanentAddress : document.getElementById("paddress").value,
+        temporaryAddress : document.getElementById("taddress").value,
+        course : document.getElementById("course").value,
+        tenthMark : document.getElementById("mark10").value,
+        twelfthMark : document.getElementById("mark12").value
+    };
+
+    let row = `
+    <tr>
+        <td>${studentId++}</td>
+        <td>${student.firstName}</td>
+        <td>${student.lastName}</td>
+        <td>${student.fatherName}</td>
+        <td>${student.motherName}</td>
+        <td>${student.mobile}</td>
+        <td>${student.email}</td>
+        <td>${student.course}</td>
+        <td>${student.tenthMark}</td>
+        <td>${student.twelfthMark}</td>
+        <td>
+            <button class="edit-btn" onclick="editStudent(this)">Edit</button>
+            <button class="delete-btn" onclick="deleteStudent(this)">Delete</button>
+        </td>
+    </tr>
+    `;
+
+    document.getElementById("tableBody").innerHTML += row;
+
+    clearForm();
+}
+
+function editStudent(button){
+
+    selectedRow = button.parentElement.parentElement;
+
+    document.getElementById("fname").value = selectedRow.cells[1].innerHTML;
+    document.getElementById("lname").value = selectedRow.cells[2].innerHTML;
+    document.getElementById("father").value = selectedRow.cells[3].innerHTML;
+    document.getElementById("mother").value = selectedRow.cells[4].innerHTML;
+    document.getElementById("mobile").value = selectedRow.cells[5].innerHTML;
+    document.getElementById("email").value = selectedRow.cells[6].innerHTML;
+    document.getElementById("course").value = selectedRow.cells[7].innerHTML;
+    document.getElementById("mark10").value = selectedRow.cells[8].innerHTML;
+    document.getElementById("mark12").value = selectedRow.cells[9].innerHTML;
+}
+
+function updateStudent(){
+
+    if(selectedRow == null){
+        alert("Please click Edit first");
+        return;
+    }
+
+    selectedRow.cells[1].innerHTML = document.getElementById("fname").value;
+    selectedRow.cells[2].innerHTML = document.getElementById("lname").value;
+    selectedRow.cells[3].innerHTML = document.getElementById("father").value;
+    selectedRow.cells[4].innerHTML = document.getElementById("mother").value;
+    selectedRow.cells[5].innerHTML = document.getElementById("mobile").value;
+    selectedRow.cells[6].innerHTML = document.getElementById("email").value;
+    selectedRow.cells[7].innerHTML = document.getElementById("course").value;
+    selectedRow.cells[8].innerHTML = document.getElementById("mark10").value;
+    selectedRow.cells[9].innerHTML = document.getElementById("mark12").value;
+
+    alert("Student Updated Successfully");
+
+    clearForm();
+    selectedRow = null;
+}
+
+function deleteStudent(button){
+
+    if(confirm("Delete this student record?")){
+
+        let row = button.parentElement.parentElement;
+        row.remove();
+    }
+}
+
+function clearForm(){
+
+    document.getElementById("fname").value = "";
+    document.getElementById("lname").value = "";
+    document.getElementById("father").value = "";
+    document.getElementById("mother").value = "";
+    document.getElementById("mobile").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("paddress").value = "";
+    document.getElementById("taddress").value = "";
+    document.getElementById("mark10").value = "";
+    document.getElementById("mark12").value = "";
+}
+
+</script>
+
+</body>
+</html>
